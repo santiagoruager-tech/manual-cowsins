@@ -770,38 +770,78 @@
     </div>
   </div>
 
-  <h3>¿Qué pasa si falta cargar algún dato?</h3>
+  <h3>Columna M — Estado: si falta algo, el sistema te avisa</h3>
+  <p>La columna <strong>M (Estado)</strong> muestra si el movimiento está completo o tiene algún dato faltante. Se actualiza sola cada vez que editás la fila.</p>
   <table>
-    <tr><th>Dato faltante</th><th>Consecuencia</th></tr>
-    <tr><td><strong>Tipo</strong></td><td>El sistema no genera el ID_Mov — el movimiento queda sin registrar</td></tr>
-    <tr><td><strong>Nombre_Insumo</strong></td><td>El sistema no puede asociar el movimiento a ningún insumo — el stock no se actualiza</td></tr>
-    <tr><td><strong>Cantidad</strong></td><td>El movimiento existe pero con cantidad 0 — el stock queda mal</td></tr>
-    <tr><td><strong>Motivo</strong></td><td>El movimiento es válido pero queda sin trazabilidad — completarlo siempre</td></tr>
-    <tr><td><strong>Registrado_Por</strong></td><td>No hay forma de saber quién lo cargó — completarlo siempre</td></tr>
+    <tr><th>Estado</th><th>Qué significa</th><th>Qué completar</th></tr>
+    <tr>
+      <td><span class="badge badge-red">FALTA TIPO</span></td>
+      <td>No elegiste el tipo de movimiento</td>
+      <td>Elegí en col C: ENTRADA, SALIDA, etc.</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">FALTA INSUMO</span></td>
+      <td>No cargaste el nombre del insumo</td>
+      <td>Escribí el nombre en col E</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-yellow" style="background:#FFF176;color:#F57F17;">FALTA CANTIDAD</span></td>
+      <td>La cantidad está vacía o en cero</td>
+      <td>Cargá la cantidad en col F</td>
+    </tr>
+    <tr>
+      <td><span class="badge" style="background:#CE93D8;color:#4A148C;">FALTA MOTIVO</span></td>
+      <td>Es una SALIDA o AJUSTE_NEGATIVO sin motivo</td>
+      <td>Elegí el motivo en col H</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-green">OK</span></td>
+      <td>El movimiento está completo</td>
+      <td>—</td>
+    </tr>
   </table>
 
+  <h3>Si te equivocaste al cargar un movimiento</h3>
   <div class="alert alert-warn">
     <div class="alert-icon">⚠</div>
     <div class="alert-text">
-      <strong>Un movimiento sin Tipo o sin Nombre_Insumo no actualiza el stock.</strong> Si cargaste una fila incompleta, no intentes borrarla — avisale a Santi o Toto para que la corrijan.
+      <strong>Las filas de MOV_STOCK están bloqueadas — no se pueden borrar ni modificar.</strong> Esto es intencional: el historial completo es lo que mantiene el stock correcto.
     </div>
   </div>
+  <p>Si cometiste un error, la solución es agregar un <strong>contra-movimiento</strong> en una fila nueva:</p>
+  <table>
+    <tr><th>Error cometido</th><th>Cómo corregirlo</th></tr>
+    <tr>
+      <td>Cargaste una SALIDA de más (cantidad mayor a la real)</td>
+      <td>Agregá un <span class="badge badge-green">AJUSTE_POSITIVO</span> con la diferencia · Motivo: <em>Ajuste por conteo</em></td>
+    </tr>
+    <tr>
+      <td>Cargaste una ENTRADA de más</td>
+      <td>Agregá un <span class="badge badge-orange">AJUSTE_NEGATIVO</span> con la diferencia · Motivo: <em>Ajuste por conteo</em></td>
+    </tr>
+    <tr>
+      <td>Cargaste el insumo equivocado</td>
+      <td>Agregá un ajuste inverso para el insumo incorrecto, y el movimiento correcto para el insumo correcto · Observaciones: aclará qué pasó</td>
+    </tr>
+  </table>
+  <p style="color:#555;font-style:italic;">Si el error es muy complejo o no sabés cómo corregirlo, avisale a Santi o Toto.</p>
 
   <h3>Columnas que NO se tocan</h3>
   <table>
     <tr><th>Columna</th><th>Por qué no tocar</th></tr>
-    <tr><td><strong>A — ID_Mov</strong></td><td>Se genera solo</td></tr>
-    <tr><td><strong>B — Fecha</strong></td><td>Se genera sola</td></tr>
+    <tr><td><strong>A — ID_Mov</strong></td><td>Se genera solo · columna protegida</td></tr>
+    <tr><td><strong>B — Fecha</strong></td><td>Se genera sola · columna protegida</td></tr>
     <tr><td><strong>D — ID_Insumo</strong></td><td>Se completa solo al escribir el nombre del insumo</td></tr>
     <tr><td><strong>G — Unidad</strong></td><td>Se completa sola</td></tr>
     <tr><td><strong>I — ID_Pedido</strong></td><td>Solo aplica a movimientos originados en pedidos</td></tr>
     <tr><td><strong>L — ID_Linea_Origen</strong></td><td>Referencia interna del sistema</td></tr>
+    <tr><td><strong>M — Estado</strong></td><td>Se calcula solo — indica si falta algún dato</td></tr>
   </table>
 
   <div class="alert alert-danger">
     <div class="alert-icon">🚫</div>
     <div class="alert-text">
-      <strong>Nunca borrar filas de MOV_STOCK.</strong> El stock actual depende del historial completo. Si se borra una fila, el stock queda desincronizado.
+      <strong>Nunca borrar filas de MOV_STOCK.</strong> El stock actual depende del historial completo. Las filas están protegidas — si necesitás corregir algo, usá un contra-movimiento (ver arriba).
     </div>
   </div>
 </div>
