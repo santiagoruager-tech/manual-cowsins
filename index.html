@@ -577,7 +577,7 @@
   <div class="alert alert-info">
     <div class="alert-icon">ℹ</div>
     <div class="alert-text">
-      <strong>No tocar:</strong> columnas A (ID_Línea), B (ID_Pedido), C (Estado), D (Fecha_Pedido), G (ID_Insumo), I (Unidad), J (Cant_Sugerida), O (Subtotal), S (Estado_Recepción) — el sistema las completa solo.
+      <strong>No tocar:</strong> columnas A (ID_Línea), B (ID_Pedido), C (Estado), F (Fecha_Pedido), G (ID_Proveedor), H (ID_Insumo), I (Unidad), J (Cant_Sugerida), Q (Subtotal), T (Monto_Total_Factura), U (Estado_Recepción) — el sistema las completa solo.
     </div>
   </div>
 
@@ -595,18 +595,20 @@
   <h4>Paso 2 — Cuando tenés el remito o la factura</h4>
   <table>
     <tr><th>Columna</th><th>Qué cargar</th></tr>
-    <tr><td><strong>N — Precio_Unitario</strong></td><td>Precio por unidad según el remito o factura</td></tr>
-    <tr><td><strong>P — Nro_Remito</strong></td><td>Número del remito</td></tr>
-    <tr><td><strong>Q — Nro_Factura</strong></td><td>Número de factura (cuando esté disponible)</td></tr>
-    <tr><td><strong>R — Monto_Total_Factura</strong></td><td>Monto total de la factura</td></tr>
+    <tr><td><strong>N — Precio Unitario SIN IVA</strong></td><td>Precio unitario neto, sin IVA</td></tr>
+    <tr><td><strong>O — Tiene IVA</strong></td><td>TRUE si corresponde IVA, FALSE si no corresponde</td></tr>
+    <tr><td><strong>P — IVA</strong></td><td>Se calcula 21% por defecto si Tiene IVA = TRUE; se puede corregir manualmente</td></tr>
+    <tr><td><strong>R — Nro_Remito</strong></td><td>Número del remito</td></tr>
+    <tr><td><strong>S — Nro_Factura</strong></td><td>Número de factura (cuando esté disponible)</td></tr>
+    <tr><td><strong>T — Monto_Total_Factura</strong></td><td>Total de la factura con IVA incluido</td></tr>
   </table>
 
-  <h3>¿Cuándo marcar LISTO = SÍ? (columna T)</h3>
+  <h3>¿Cuándo marcar LISTO = SÍ? (columna V)</h3>
   <p>Marcá SÍ <strong>solo cuando tenés todo completo</strong>:</p>
   <div class="checklist">
     <div class="check-item"><div class="check-box"></div>Cantidad recibida cargada (col M)</div>
     <div class="check-item"><div class="check-box"></div>Precio unitario cargado (col N)</div>
-    <div class="check-item"><div class="check-box"></div>Número de remito o factura (col P o Q)</div>
+    <div class="check-item"><div class="check-box"></div>Número de remito o factura (col R o S)</div>
     <div class="check-item"><div class="check-box"></div>Monto total de factura (col R)</div>
   </div>
 
@@ -629,13 +631,36 @@
     </div>
   </div>
 
+  <h3>Pedidos sugeridos automáticos</h3>
+  <p>Cuando el stock de un insumo baja del mínimo, el sistema agrega una fila con estado <span class="badge badge-gray">PEDIDO SUGERIDO</span> en PEDIDOS. Es solo una sugerencia — no tiene ID de pedido ni impacta en nada hasta que vos la confirmés.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">Revisás la fila sugerida y decidís si corresponde pedir</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">Si sí: completás la <strong>Cant_Pedida (col K)</strong> con la cantidad que querés pedir — el sistema la convierte en un pedido real (BORRADOR) y le asigna el ID automáticamente</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">Si no corresponde pedir: ignorala o borrá la fila</div>
+    </div>
+  </div>
+  <div class="alert alert-info">
+    <div class="alert-icon">ℹ</div>
+    <div class="alert-text">
+      Un pedido sugerido que ya no aplica (porque el stock se recuperó) desaparece solo la próxima vez que el sistema revisa el stock.
+    </div>
+  </div>
+
   <h3>Estados posibles en PEDIDOS</h3>
   <table>
     <tr><th>Estado</th><th>Qué significa</th><th>Qué hacés</th></tr>
     <tr>
       <td><span class="badge badge-gray">PEDIDO SUGERIDO</span></td>
-      <td>Referencia de reposición según stock. <strong>No es un pedido real.</strong></td>
-      <td>Decidís si corresponde crear un pedido real</td>
+      <td>El sistema detectó stock bajo y generó una sugerencia automática. <strong>Todavía no es un pedido real</strong> — no tiene ID asignado.</td>
+      <td>Si querés pedirlo: completá la <strong>Cant_Pedida (col K)</strong> — el sistema lo convierte automáticamente en un pedido real (BORRADOR) y le asigna su ID. Si no corresponde pedir, ignoralo o borrá la fila.</td>
     </tr>
     <tr>
       <td><span class="badge badge-gray">BORRADOR</span></td>
@@ -994,9 +1019,10 @@
       <div class="rules">
         <div class="rule-item"><div class="rule-x">✗</div>I — Unidad (se completa sola)</div>
         <div class="rule-item"><div class="rule-x">✗</div>J — Cant_Sugerida (referencia del sistema)</div>
-        <div class="rule-item"><div class="rule-x">✗</div>O — Subtotal (se calcula solo)</div>
-        <div class="rule-item"><div class="rule-x">✗</div>S — Estado_Recepción (se calcula solo)</div>
-        <div class="rule-item"><div class="rule-x">✗</div>Columna V en adelante (control interno)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>Q — Subtotal (se calcula solo, sin IVA)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>T — Monto_Total_Factura (se calcula solo)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>U — Estado_Recepción (se calcula solo)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>Columna X en adelante (control interno)</div>
       </div>
     </div>
   </div>
