@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual de Gestión — COWSINS</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    color: #1a1a1a;
+    background: #fff;
+    line-height: 1.5;
+  }
+
+  /* ── Portada ───────────────────────────────────────────────── */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #1a1a1a;
+    color: #fff;
+    text-align: center;
+    page-break-after: always;
+    padding: 60px 40px;
+  }
+  .cover-logo { font-size: 52px; font-weight: 900; letter-spacing: 4px; margin-bottom: 8px; color: #F97316; }
+  .cover-sub { font-size: 18px; color: #aaa; letter-spacing: 2px; margin-bottom: 60px; text-transform: uppercase; }
+  .cover-title { font-size: 32px; font-weight: 700; margin-bottom: 16px; border-top: 2px solid #F97316; border-bottom: 2px solid #F97316; padding: 16px 40px; }
+  .cover-for { font-size: 14px; color: #aaa; margin-bottom: 8px; }
+  .cover-date { font-size: 13px; color: #666; margin-top: 60px; }
+
+  /* ── Índice ────────────────────────────────────────────────── */
+  .toc { padding: 48px 56px; page-break-after: always; }
+  .toc h2 { font-size: 22px; font-weight: 700; border-bottom: 3px solid #F97316; padding-bottom: 8px; margin-bottom: 28px; }
+  .toc-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dotted #ddd; font-size: 13px; }
+  .toc-item-title { font-weight: 600; }
+  .toc-item-num { font-weight: 700; color: #F97316; font-size: 14px; }
+  .toc-sub { padding: 6px 0 6px 20px; border-bottom: 1px dotted #eee; color: #555; font-size: 12px; }
+
+  /* ── Layout general ────────────────────────────────────────── */
+  .section { padding: 48px 56px; page-break-before: always; }
+  .section:first-of-type { page-break-before: auto; }
+  .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; padding-bottom: 12px; border-bottom: 3px solid #F97316; }
+  .section-num { background: #F97316; color: #fff; font-size: 22px; font-weight: 900; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-title { font-size: 24px; font-weight: 700; }
+  .section-desc { font-size: 12px; color: #555; margin-top: 2px; }
+
+  h3 { font-size: 14px; font-weight: 700; margin: 24px 0 10px 0; padding-left: 10px; border-left: 4px solid #F97316; }
+  h4 { font-size: 12px; font-weight: 700; color: #444; margin: 16px 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+  p { margin-bottom: 10px; color: #333; }
+
+  /* ── Tablas ────────────────────────────────────────────────── */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px 0; font-size: 11.5px; }
+  th { background: #1a1a1a; color: #fff; padding: 8px 12px; text-align: left; font-weight: 600; font-size: 11px; }
+  td { padding: 7px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafafa; }
+  tr:hover td { background: #fff8f3; }
+
+  /* ── Alertas ───────────────────────────────────────────────── */
+  .alert { border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-size: 12px; display: flex; gap: 10px; align-items: flex-start; }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-text { flex: 1; line-height: 1.5; }
+  .alert-warn  { background: #FFF3E0; border-left: 4px solid #F97316; }
+  .alert-danger { background: #FFEBEE; border-left: 4px solid #E53935; }
+  .alert-ok    { background: #E8F5E9; border-left: 4px solid #43A047; }
+  .alert-info  { background: #E3F2FD; border-left: 4px solid #1E88E5; }
+
+  /* ── Badges ────────────────────────────────────────────────── */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+  .badge-orange { background: #FFF3E0; color: #E65100; }
+  .badge-red    { background: #FFEBEE; color: #B71C1C; }
+  .badge-green  { background: #E8F5E9; color: #1B5E20; }
+  .badge-blue   { background: #E3F2FD; color: #1565C0; }
+  .badge-gray   { background: #F5F5F5; color: #424242; }
+  .badge-purple { background: #F3E5F5; color: #4A148C; }
+  .badge-yellow { background: #FFF9C4; color: #F57F17; }
+  .badge-dark   { background: #1a1a1a; color: #fff; }
+
+  /* ── Flujo ─────────────────────────────────────────────────── */
+  .flujo { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
+  .flujo-item { display: flex; align-items: stretch; gap: 0; }
+  .flujo-line { display: flex; flex-direction: column; align-items: center; width: 40px; flex-shrink: 0; }
+  .flujo-dot { width: 14px; height: 14px; border-radius: 50%; background: #F97316; flex-shrink: 0; margin-top: 3px; }
+  .flujo-connector { width: 2px; background: #F97316; flex: 1; min-height: 20px; }
+  .flujo-item:last-child .flujo-connector { background: transparent; }
+  .flujo-content { padding: 4px 0 20px 8px; flex: 1; }
+  .flujo-momento { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #F97316; letter-spacing: 0.5px; }
+  .flujo-text { font-size: 12px; color: #333; margin-top: 2px; line-height: 1.5; }
+
+  /* ── Print ─────────────────────────────────────────────────── */
+  @media print {
+    body { font-size: 11px; }
+    .cover { min-height: auto; height: 100vh; }
+    .section { page-break-before: always; padding: 36px 48px; }
+    table { font-size: 10.5px; }
+    @page { margin: 15mm 15mm; size: A4; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ PORTADA ═══════════════ -->
+<div class="cover">
+  <div class="cover-logo">COWSINS</div>
+  <div class="cover-sub">Burgers</div>
+  <div class="cover-title">Manual de Gestión</div>
+  <div class="cover-for">Para Santi y Toto</div>
+  <p style="color:#777;font-size:12px;margin-top:24px;max-width:420px;">
+    Esta planilla centraliza las compras, pagos, gastos, insumos y costos del negocio.
+    Acá está toda la información financiera y de administración.
+  </p>
+  <div class="cover-date">Versión Junio 2026</div>
+  <a href="index.html" style="margin-top:32px;color:#F97316;font-size:12px;letter-spacing:1px;">→ Ver Manual Operativo (encargados)</a>
+</div>
+
+<!-- ═══════════════ ÍNDICE ═══════════════ -->
+<div class="toc">
+  <h2>Contenido</h2>
+  <div class="toc-item">
+    <span class="toc-item-title">1. Cómo se conectan OPERATIVO y GESTIÓN</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">El flujo de traspasos automáticos</div>
+  <div class="toc-item">
+    <span class="toc-item-title">2. INSUMOS — precios, stock y alertas</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Cómo mantener precios, stock mínimo y máximo</div>
+  <div class="toc-item">
+    <span class="toc-item-title">3. PROVEEDORES</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Alta de proveedor, días de crédito</div>
+  <div class="toc-item">
+    <span class="toc-item-title">4. MAESTRO PRODUCTOS y RECETAS</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Costo de productos, alertas de margen</div>
+  <div class="toc-item">
+    <span class="toc-item-title">5. COMPRAS — seguimiento de deuda con proveedores</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Estados, vencimientos, cómo registrar una compra directa</div>
+  <div class="toc-item">
+    <span class="toc-item-title">6. PAGOS — registrar pagos a proveedores</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Cómo cargar un pago, estados, selector de compras</div>
+  <div class="toc-item">
+    <span class="toc-item-title">7. GASTOS — gastos operativos</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Gastos recurrentes y puntuales, estados, caja</div>
+  <div class="toc-item">
+    <span class="toc-item-title">8. CIERRES DE CAJA</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Lectura de cierres recibidos desde Operativo</div>
+  <div class="toc-item">
+    <span class="toc-item-title">9. FINANCIERO y AGENDA DE PAGOS</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Vista consolidada de caja y vencimientos próximos</div>
+  <div class="toc-item">
+    <span class="toc-item-title">10. Menú Cowsins — referencia de funciones</span>
+    <span class="toc-item-num">→</span>
+  </div>
+</div>
+
+<!-- ═══════════════ 1. CONEXIÓN OPERATIVO–GESTIÓN ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div>
+      <div class="section-title">Cómo se conectan OPERATIVO y GESTIÓN</div>
+      <div class="section-desc">El flujo de traspasos automáticos</div>
+    </div>
+  </div>
+
+  <p>Las dos planillas trabajan en conjunto. Los encargados operan en OPERATIVO; vos administrás en GESTIÓN. El sistema los sincroniza automáticamente.</p>
+
+  <div class="flujo">
+    <div class="flujo-item">
+      <div class="flujo-line"><div class="flujo-dot"></div><div class="flujo-connector"></div></div>
+      <div class="flujo-content">
+        <div class="flujo-momento">Encargado en OPERATIVO</div>
+        <div class="flujo-text">Carga la recepción de mercadería en PEDIDOS y marca <strong>LISTO = SÍ</strong>.</div>
+      </div>
+    </div>
+    <div class="flujo-item">
+      <div class="flujo-line"><div class="flujo-dot"></div><div class="flujo-connector"></div></div>
+      <div class="flujo-content">
+        <div class="flujo-momento">Sistema automático (inmediato)</div>
+        <div class="flujo-text">
+          Crea una <strong>COMPRA</strong> en GESTIÓN con los datos del pedido.<br>
+          Registra una <strong>ENTRADA</strong> en MOV_STOCK.<br>
+          Actualiza el <strong>STOCK</strong> del insumo.<br>
+          Actualiza el <strong>precio de compra</strong> en INSUMOS si cambió.
+        </div>
+      </div>
+    </div>
+    <div class="flujo-item">
+      <div class="flujo-line"><div class="flujo-dot"></div><div class="flujo-connector"></div></div>
+      <div class="flujo-content">
+        <div class="flujo-momento">Encargado en OPERATIVO</div>
+        <div class="flujo-text">Al fin del turno completa CIERRE DE CAJA y marca <strong>Confirmar Cierre = SÍ</strong>.</div>
+      </div>
+    </div>
+    <div class="flujo-item">
+      <div class="flujo-line"><div class="flujo-dot"></div><div class="flujo-connector"></div></div>
+      <div class="flujo-content">
+        <div class="flujo-momento">Sistema automático (inmediato)</div>
+        <div class="flujo-text">Copia el cierre a <strong>CIERRES DE CAJA</strong> en GESTIÓN y bloquea la fila en OPERATIVO.</div>
+      </div>
+    </div>
+    <div class="flujo-item">
+      <div class="flujo-line"><div class="flujo-dot"></div><div class="flujo-connector"></div></div>
+      <div class="flujo-content">
+        <div class="flujo-momento">Vos en GESTIÓN</div>
+        <div class="flujo-text">Ves la compra en COMPRAS, la pagás cargando en PAGOS, y el FINANCIERO se actualiza solo.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <div class="alert-icon">ℹ</div>
+    <div class="alert-text">
+      <strong>Respaldo horario:</strong> si el traspaso inmediato falla (sin internet, error de script), el trigger horario de GESTIÓN lo reintenta automáticamente. El anti-duplicado garantiza que no se creen dos compras para el mismo pedido.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 2. INSUMOS ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div>
+      <div class="section-title">INSUMOS</div>
+      <div class="section-desc">Precios, stock mínimo/máximo y alertas de costo</div>
+    </div>
+  </div>
+
+  <p>INSUMOS es el maestro de ingredientes. Cada insumo tiene un precio de compra, una unidad, y parámetros de stock que alimentan al STOCK de OPERATIVO.</p>
+
+  <h3>Columnas clave que mantener actualizadas</h3>
+  <table>
+    <tr><th>Columna</th><th>Qué es</th><th>Quién la actualiza</th></tr>
+    <tr><td><strong>H — Precio_Compra</strong></td><td>Precio por unidad de compra (ej: precio por caja)</td><td>El sistema lo actualiza automáticamente en cada traspaso. Se puede editar manualmente.</td></tr>
+    <tr><td><strong>I — Precio_x_Unidad_Uso</strong></td><td>Precio por unidad de uso (ej: precio por unidad de pan). Se calcula como Precio_Compra / Factor.</td><td>Se recalcula automáticamente al cambiar Precio_Compra.</td></tr>
+    <tr><td><strong>J — Factor_Conversión</strong></td><td>Cuántas unidades de uso hay en una unidad de compra (ej: 48 panes por caja)</td><td>Manual. Cambia solo si cambia el packaging del proveedor.</td></tr>
+    <tr><td><strong>N — Stock_Min</strong></td><td>Cantidad mínima aceptable. Por debajo → alerta BAJO en STOCK y sugerencia de pedido.</td><td>Manual. Revisarlo cada tanto según la rotación real.</td></tr>
+    <tr><td><strong>O — Stock_Max</strong></td><td>Cantidad ideal de stock. Determina cuánto pedir para rellenar.</td><td>Manual.</td></tr>
+    <tr><td><strong>P — Activo</strong></td><td>SÍ / NO. Los insumos inactivos no aparecen en sugerencias ni dropdowns de OPERATIVO.</td><td>Manual.</td></tr>
+    <tr><td><strong>Q — Medida_Stock</strong></td><td>"Unidad de compra" o "Unidad de uso". Define en qué unidad se lleva el stock en OPERATIVO.</td><td>Manual. Cambiar con cuidado — afecta todos los movimientos futuros.</td></tr>
+  </table>
+
+  <h3>Alertas de precio en INSUMOS</h3>
+  <p>Si un traspaso detecta que el precio nuevo difiere más del 15% del anterior, la celda Precio_Compra se resalta en naranja con una nota indicando el cambio (ej: <em>"Desde traspaso: $800 → $950 (+18.8%)"</em>).</p>
+  <p>Para limpiar el resaltado: corregí el precio si es un error, o simplemente editá la celda para confirmar el nuevo valor.</p>
+
+  <h3>Alertas de costo en MAESTRO PRODUCTOS</h3>
+  <p>Los cambios de precio en INSUMOS no repintan MAESTRO PRODUCTOS en tiempo real (para no frenar cada edición). Se actualizan:</p>
+  <ul style="padding-left:20px;color:#333;margin-bottom:10px;">
+    <li>Automáticamente cada día a las 4 AM</li>
+    <li>Manualmente: <strong>Cowsins → Repintar estados de costo — MAESTRO PRODUCTOS</strong></li>
+  </ul>
+</div>
+
+<!-- ═══════════════ 3. PROVEEDORES ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div>
+      <div class="section-title">PROVEEDORES</div>
+      <div class="section-desc">Alta y configuración de proveedores</div>
+    </div>
+  </div>
+
+  <h3>Dar de alta un proveedor nuevo</h3>
+  <div class="alert alert-ok">
+    <div class="alert-icon">✓</div>
+    <div class="alert-text">El ID (PROV-XXX) se genera automáticamente al cargar el nombre. No escribir el ID a mano.</div>
+  </div>
+
+  <table>
+    <tr><th>Columna</th><th>Qué cargar</th><th>Impacto en el sistema</th></tr>
+    <tr><td><strong>B — Nombre</strong></td><td>Nombre del proveedor tal como aparece en las facturas</td><td>Se usa en dropdowns de PEDIDOS y COMPRAS</td></tr>
+    <tr><td><strong>E — Tel / Contacto</strong></td><td>Número de WhatsApp o teléfono</td><td>Solo referencia, sin impacto automático</td></tr>
+    <tr><td><strong>F — Día_Pedido</strong></td><td>Día(s) habitual(es) de pedido</td><td>Referencia para los encargados</td></tr>
+    <tr><td><strong>G — Día_Entrega</strong></td><td>Día(s) habitual(es) de entrega</td><td>Referencia para los encargados</td></tr>
+    <tr><td><strong>I — Días_Crédito</strong></td><td>Días de plazo para pagar después de la recepción (ej: 30)</td><td>El sistema calcula automáticamente la fecha de vencimiento en COMPRAS</td></tr>
+    <tr><td><strong>L — Activo</strong></td><td>SÍ / NO</td><td>Los inactivos no aparecen en dropdowns de OPERATIVO</td></tr>
+  </table>
+
+  <div class="alert alert-info">
+    <div class="alert-icon">ℹ</div>
+    <div class="alert-text">
+      <strong>Días de crédito:</strong> si un proveedor tiene 30 días, al traspasar un pedido el sistema pone automáticamente la fecha de vencimiento = fecha de recepción + 30 días, y agrega una nota en la celda.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 4. MAESTRO PRODUCTOS y RECETAS ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div>
+      <div class="section-title">MAESTRO PRODUCTOS y RECETAS</div>
+      <div class="section-desc">Gestión de costos por producto</div>
+    </div>
+  </div>
+
+  <p>MAESTRO PRODUCTOS lista todos los productos del menú con su costo calculado en base a las RECETAS. Las RECETAS definen qué insumos y en qué cantidad usa cada producto.</p>
+
+  <h3>Cómo funciona el cálculo de costo</h3>
+  <p>El sistema multiplica la cantidad de cada insumo en la receta por su Precio_x_Unidad_Uso en INSUMOS. La suma es el costo del producto.</p>
+
+  <h3>Estados de costo (alertas de margen)</h3>
+  <table>
+    <tr><th>Estado</th><th>Qué significa</th></tr>
+    <tr><td><span class="badge badge-green">OK</span></td><td>El costo está dentro del rango esperado para el precio de venta</td></tr>
+    <tr><td><span class="badge badge-yellow">REVISAR</span></td><td>El costo subió y el margen bajó — evaluar ajuste de precio</td></tr>
+    <tr><td><span class="badge badge-red">CRÍTICO</span></td><td>El margen es muy bajo o negativo — requiere acción</td></tr>
+  </table>
+
+  <div class="alert alert-warn">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-text">
+      Los estados de costo se actualizan cada día a las 4 AM o manualmente con <strong>Cowsins → Repintar estados de costo</strong>. Si acabás de cambiar el precio de un insumo, el MAESTRO PRODUCTOS no se actualiza en el momento — usá el menú para verlo de inmediato.
+    </div>
+  </div>
+
+  <h3>Agregar un producto nuevo</h3>
+  <p>1. Darlo de alta en MAESTRO PRODUCTOS (ID se genera automáticamente).<br>
+  2. Cargar su receta en RECETAS: una fila por cada insumo que usa, indicando la cantidad en la unidad de uso del insumo.<br>
+  3. El costo se calcula solo a partir de los precios actuales en INSUMOS.</p>
+</div>
+
+<!-- ═══════════════ 5. COMPRAS ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div>
+      <div class="section-title">COMPRAS</div>
+      <div class="section-desc">Seguimiento de deuda con proveedores</div>
+    </div>
+  </div>
+
+  <p>Cada compra representa una deuda con un proveedor. La mayoría llegan automáticamente desde OPERATIVO cuando un encargado marca LISTO. También se pueden cargar manualmente.</p>
+
+  <h3>Estados de una compra</h3>
+  <table>
+    <tr><th>Estado</th><th>Qué significa</th><th>Qué hacer</th></tr>
+    <tr>
+      <td><span class="badge badge-purple">FALTA FACTURA O REMITO</span></td>
+      <td>Llegó mercadería pero sin documentación</td>
+      <td>Pedirle la factura/remito al proveedor y completar las columnas Nro_Remito o Nro_Factura</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-purple">FALTA CARGAR MONTO</span></td>
+      <td>Hay factura pero no se cargó el monto total</td>
+      <td>Completar Monto_Total en la compra</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-yellow">PENDIENTE</span></td>
+      <td>Deuda activa sin vencimiento próximo</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">VENCE EN X DÍAS (DD/MM)</span></td>
+      <td>La deuda vence pronto</td>
+      <td>Programar el pago</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-red">VENCIDO</span></td>
+      <td>La deuda está vencida</td>
+      <td>Pagar y cargar en PAGOS</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-green">PAGADO</span></td>
+      <td>Saldo = 0, deuda saldada</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">PAGO PARCIAL</span></td>
+      <td>Se pagó parte pero queda saldo</td>
+      <td>Completar el pago cuando corresponda</td>
+    </tr>
+  </table>
+
+  <h3>Cargar una compra directa (sin pasar por OPERATIVO)</h3>
+  <p>Si compraste algo directamente (sin que el encargado lo recibiera en OPERATIVO), cargala manualmente:</p>
+  <table>
+    <tr><th>Campo</th><th>Qué cargar</th></tr>
+    <tr><td>ID_Proveedor / Nom_Proveedor</td><td>El proveedor (ID se autocompleta al escribir el nombre o viceversa)</td></tr>
+    <tr><td>Fecha_Remito</td><td>Fecha del remito o factura</td></tr>
+    <tr><td>Nro_Remito / Nro_Factura</td><td>Número de los documentos recibidos</td></tr>
+    <tr><td>Monto_Total</td><td>Importe total de la compra</td></tr>
+    <tr><td>Cond_Pago</td><td>CONTADO / 30 días / 60 días / etc.</td></tr>
+  </table>
+
+  <div class="alert alert-ok">
+    <div class="alert-icon">✓</div>
+    <div class="alert-text">El ID de compra, Estado_Pago, Monto_Pagado, Saldo_Pendiente y Fecha_Vencimiento se calculan/generan automáticamente.</div>
+  </div>
+</div>
+
+<!-- ═══════════════ 6. PAGOS ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <div>
+      <div class="section-title">PAGOS</div>
+      <div class="section-desc">Registrar pagos a proveedores</div>
+    </div>
+  </div>
+
+  <p>Cada fila en PAGOS representa un pago realizado a un proveedor. Al cargarlo, el sistema actualiza automáticamente el saldo de la compra correspondiente.</p>
+
+  <h3>Cómo cargar un pago</h3>
+  <table>
+    <tr><th>Campo</th><th>Qué cargar</th></tr>
+    <tr><td><strong>Fecha_Pago</strong></td><td>Fecha en que se realizó el pago</td></tr>
+    <tr><td><strong>ID_Proveedor / Nombre_Proveedor</strong></td><td>El proveedor. Al escribir uno, el otro se completa solo.</td></tr>
+    <tr><td><strong>ID_Compra</strong></td><td>Elegir del desplegable (filtra por proveedor). Si el pago cubre varias compras, hacer una fila por compra.</td></tr>
+    <tr><td><strong>Monto_Pagado</strong></td><td>Importe exacto del pago</td></tr>
+    <tr><td><strong>ID_Cuenta</strong></td><td>Cuenta desde la que se pagó</td></tr>
+    <tr><td><strong>Caja</strong></td><td>SÍ / NO — si el pago salió de caja física</td></tr>
+    <tr><td><strong>Nro_Transferencia</strong></td><td>Número de comprobante si fue por transferencia</td></tr>
+  </table>
+
+  <div class="alert alert-ok">
+    <div class="alert-icon">✓</div>
+    <div class="alert-text">Al cargar el Monto_Pagado y el ID_Compra, el sistema actualiza el Monto_Pagado y Saldo_Pendiente en COMPRAS automáticamente.</div>
+  </div>
+
+  <h3>Estados de un pago</h3>
+  <table>
+    <tr><th>Estado</th><th>Qué significa</th></tr>
+    <tr><td><span class="badge badge-green">PAGADO</span></td><td>Todo correcto</td></tr>
+    <tr><td><span class="badge badge-orange">FALTA CAJA</span></td><td>El pago está cargado pero falta indicar si salió de caja (col Caja = vacío)</td></tr>
+    <tr><td><span class="badge badge-red">SIN COMPRA</span></td><td>No tiene ID_Compra asociado — el pago queda "flotando" sin impactar el saldo de ninguna compra</td></tr>
+  </table>
+
+  <div class="alert alert-info">
+    <div class="alert-icon">ℹ</div>
+    <div class="alert-text">
+      <strong>Ver pagos sin caja:</strong> usá <strong>Cowsins → Ver pagos sin caja</strong> para ver un resumen de los pagos que tienen Caja vacío. Completarlos evita inconsistencias en el FINANCIERO.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 7. GASTOS ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">7</div>
+    <div>
+      <div class="section-title">GASTOS</div>
+      <div class="section-desc">Gastos operativos del negocio</div>
+    </div>
+  </div>
+
+  <p>GASTOS registra todos los gastos que no son compras a proveedores: alquiler, servicios, sueldos, mantenimiento, marketing, etc.</p>
+
+  <h3>Cómo cargar un gasto</h3>
+  <table>
+    <tr><th>Campo</th><th>Qué cargar</th></tr>
+    <tr><td><strong>Concepto</strong></td><td>Descripción breve del gasto</td></tr>
+    <tr><td><strong>Mes</strong></td><td>Mes al que corresponde (ej: Junio 2026)</td></tr>
+    <tr><td><strong>Fecha_Venc</strong></td><td>Fecha límite de pago</td></tr>
+    <tr><td><strong>Importe</strong></td><td>Monto total del gasto</td></tr>
+    <tr><td><strong>ID_Rubro</strong></td><td>Categoría del gasto (alquiler, servicios, sueldos…)</td></tr>
+    <tr><td><strong>ID_Cuenta</strong></td><td>Cuenta con la que se va a pagar</td></tr>
+  </table>
+  <p>Cuando se paga, completar también: <strong>Fecha_Pago</strong>, <strong>Imp_Abonado</strong>, <strong>Caja</strong>, y (si aplica) <strong>Nro_Factura</strong>.</p>
+
+  <h3>Estados de un gasto</h3>
+  <table>
+    <tr><th>Estado</th><th>Qué significa</th></tr>
+    <tr><td><span class="badge badge-yellow">PENDIENTE</span></td><td>Gasto cargado, aún no vencido</td></tr>
+    <tr><td><span class="badge badge-orange">VENCE EN X DÍAS (DD/MM)</span></td><td>Vencimiento próximo</td></tr>
+    <tr><td><span class="badge badge-red">VENCIDO</span></td><td>Pasó la fecha de pago sin abonar</td></tr>
+    <tr><td><span class="badge badge-green">PAGADO</span></td><td>Abonado en su totalidad</td></tr>
+    <tr><td><span class="badge badge-blue">PAGO PARCIAL</span></td><td>Imp_Abonado > 0 pero menor al Importe</td></tr>
+    <tr><td><span class="badge badge-orange">FALTA CAJA</span></td><td>Pagado pero sin indicar si salió de caja</td></tr>
+  </table>
+</div>
+
+<!-- ═══════════════ 8. CIERRES DE CAJA ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">8</div>
+    <div>
+      <div class="section-title">CIERRES DE CAJA</div>
+      <div class="section-desc">Registro de cierres recibidos desde Operativo</div>
+    </div>
+  </div>
+
+  <p>Los cierres llegan automáticamente desde OPERATIVO cuando el encargado confirma el turno. Cada fila es un cierre de turno bloqueado — no se modifica en GESTIÓN.</p>
+
+  <h3>Columnas principales</h3>
+  <table>
+    <tr><th>Columna</th><th>Qué es</th></tr>
+    <tr><td>ID_Cierre</td><td>Identificador único del cierre (CC-XXX)</td></tr>
+    <tr><td>Fecha / Turno / Responsable</td><td>Datos básicos del turno</td></tr>
+    <tr><td>Ventas_Efectivo</td><td>Ventas en efectivo según el sistema de ventas</td></tr>
+    <tr><td>Efectivo caja</td><td>Efectivo físico contado por el encargado</td></tr>
+    <tr><td>Gastos_Chicos / Concepto</td><td>Gastos menores pagados con caja durante el turno</td></tr>
+    <tr><td>Cambio al cierre</td><td>Efectivo que queda en caja para el siguiente turno</td></tr>
+    <tr><td>Efectivo_Sobre</td><td>Lo que va al sobre: Efectivo contado − Cambio al cierre</td></tr>
+    <tr><td>Diferencia</td><td>Diferencia entre lo esperado y lo contado. Idealmente 0.</td></tr>
+    <tr><td>Estado_Alerta</td><td><span class="badge badge-green">OK</span> / <span class="badge badge-orange">Sobrante</span> / <span class="badge badge-red">Faltante</span></td></tr>
+  </table>
+
+  <div class="alert alert-info">
+    <div class="alert-icon">ℹ</div>
+    <div class="alert-text">
+      <strong>Si un cierre tiene un error:</strong> usá <strong>Cowsins → Admin ▶ → Desbloquear cierre para edición</strong> (en OPERATIVO) o directamente desde GESTIÓN si necesitás corregir un valor. Después volvé a bloquear.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 9. FINANCIERO y AGENDA PAGOS ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">9</div>
+    <div>
+      <div class="section-title">FINANCIERO y AGENDA DE PAGOS</div>
+      <div class="section-desc">Vista consolidada de caja y vencimientos</div>
+    </div>
+  </div>
+
+  <p>Estas hojas se generan automáticamente a partir de COMPRAS, PAGOS, GASTOS y CIERRES DE CAJA. No se editan manualmente.</p>
+
+  <h3>FINANCIERO</h3>
+  <p>Muestra el resumen mensual: ingresos por ventas (desde cierres), egresos por compras y gastos, y el saldo resultante. Se actualiza automáticamente al recalcular.</p>
+
+  <h3>AGENDA DE PAGOS</h3>
+  <p>Lista todos los compromisos de pago pendientes (compras y gastos) ordenados por fecha de vencimiento. Permite ver de un vistazo qué hay que pagar y cuándo.</p>
+
+  <div class="alert alert-ok">
+    <div class="alert-icon">✓</div>
+    <div class="alert-text">
+      Para actualizar ambas hojas: <strong>Cowsins → Recalcular TODO</strong> o esperar al trigger diario de las 4 AM.
+      Si las hojas no existen todavía: <strong>Cowsins → Admin ▶ → Configurar hojas Financiero y Agenda</strong>.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 10. MENÚ COWSINS ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div>
+      <div class="section-title">Menú Cowsins — referencia</div>
+      <div class="section-desc">Qué hace cada ítem del menú</div>
+    </div>
+  </div>
+
+  <h3>Menú principal (uso diario)</h3>
+  <table>
+    <tr><th>Ítem</th><th>Qué hace</th><th>Cuándo usarlo</th></tr>
+    <tr><td>Recalcular TODO</td><td>Recalcula y repinta estados en todas las hojas: COMPRAS, PAGOS, GASTOS, INSUMOS, MAESTRO PRODUCTOS</td><td>Si algo se ve desactualizado o después de cambios masivos. El trigger diario lo hace automáticamente a las 4 AM.</td></tr>
+    <tr><td>Actualizar LookerPagos</td><td>Reconstruye la vista consolidada de pagos pendientes</td><td>Si la vista de pagos está desactualizada</td></tr>
+    <tr><td>Sincronizar pedidos pendientes</td><td>Verifica si hay pedidos de OPERATIVO que aún no fueron traspasados y los reprocesa</td><td>Si un traspaso falló (por internet cortado, error de script, etc.)</td></tr>
+    <tr><td>Recalcular estados — GASTOS / COMPRAS / PAGOS</td><td>Recalcula estados y colores de cada hoja por separado</td><td>Si solo querés actualizar una hoja específica</td></tr>
+    <tr><td>Ver pagos sin caja / Ver gastos sin caja</td><td>Muestra un listado de registros con el campo Caja vacío</td><td>Para auditar y completar registros incompletos</td></tr>
+    <tr><td>Repintar alertas de precio — INSUMOS</td><td>Repinta las alertas de variación de precio en INSUMOS</td><td>Después de cambiar precios manualmente</td></tr>
+    <tr><td>Repintar estados de costo — MAESTRO PRODUCTOS</td><td>Recalcula los colores de margen en MAESTRO PRODUCTOS</td><td>Después de actualizar precios en INSUMOS</td></tr>
+  </table>
+
+  <h3>Submenú Admin ▶ (configuración y reparación)</h3>
+  <table>
+    <tr><th>Ítem</th><th>Qué hace</th></tr>
+    <tr><td>Actualizar selectores — PAGOS / COMPRAS / GASTOS</td><td>Reconstruye los dropdowns de cada hoja. Usar si aparecen opciones desactualizadas en los desplegables.</td></tr>
+    <tr><td>Reparar filas sin ID — GASTOS / PAGOS</td><td>Asigna IDs a filas que quedaron sin ID (ej: copiadas desde otra fuente)</td></tr>
+    <tr><td>Migrar CIERRES DE CAJA (1 vez)</td><td>Migra el formato antiguo de cierres al formato actual. Ya ejecutado — no volver a correr.</td></tr>
+    <tr><td>Normalizar / Limpiar CIERRES DE CAJA</td><td>Limpia duplicados y normaliza el formato de los cierres históricos</td></tr>
+    <tr><td>Configurar parámetros de cambio</td><td>Establece el cambio inicial de caja para los cierres</td></tr>
+    <tr><td>Configurar hojas Financiero y Agenda</td><td>Crea o reconfigura las hojas FINANCIERO y AGENDA PAGOS con las fórmulas correctas</td></tr>
+    <tr><td>Instalar trigger diario (1 vez)</td><td>Instala el trigger que corre recalcularTodoGestion a las 4 AM. Ya ejecutado — no volver a correr.</td></tr>
+  </table>
+</div>
+
+</body>
+</html>
