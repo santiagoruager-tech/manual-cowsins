@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Operativo — COWSINS</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px;
+    color: #1a1a1a;
+    background: #fff;
+    line-height: 1.5;
+  }
+
+  /* ── Portada ───────────────────────────────────────────────── */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #1a1a1a;
+    color: #fff;
+    text-align: center;
+    page-break-after: always;
+    padding: 60px 40px;
+  }
+  .cover-logo {
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+    color: #F97316;
+  }
+  .cover-sub {
+    font-size: 18px;
+    color: #aaa;
+    letter-spacing: 2px;
+    margin-bottom: 60px;
+    text-transform: uppercase;
+  }
+  .cover-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    border-top: 2px solid #F97316;
+    border-bottom: 2px solid #F97316;
+    padding: 16px 40px;
+  }
+  .cover-for {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 8px;
+  }
+  .cover-date {
+    font-size: 13px;
+    color: #666;
+    margin-top: 60px;
+  }
+
+  /* ── Índice ────────────────────────────────────────────────── */
+  .toc {
+    padding: 48px 56px;
+    page-break-after: always;
+  }
+  .toc h2 {
+    font-size: 22px;
+    font-weight: 700;
+    border-bottom: 3px solid #F97316;
+    padding-bottom: 8px;
+    margin-bottom: 28px;
+    color: #1a1a1a;
+  }
+  .toc-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dotted #ddd;
+    font-size: 13px;
+  }
+  .toc-item-title { font-weight: 600; }
+  .toc-item-num {
+    font-weight: 700;
+    color: #F97316;
+    font-size: 14px;
+  }
+  .toc-sub {
+    padding: 6px 0 6px 20px;
+    border-bottom: 1px dotted #eee;
+    color: #555;
+    font-size: 12px;
+  }
+
+  /* ── Layout general ────────────────────────────────────────── */
+  .section {
+    padding: 48px 56px;
+    page-break-before: always;
+  }
+  .section:first-of-type { page-break-before: auto; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #F97316;
+  }
+  .section-num {
+    background: #F97316;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 900;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+  .section-desc {
+    font-size: 12px;
+    color: #555;
+    margin-top: 2px;
+  }
+
+  h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 24px 0 10px 0;
+    padding-left: 10px;
+    border-left: 4px solid #F97316;
+  }
+  h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #444;
+    margin: 16px 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  p { margin-bottom: 10px; color: #333; }
+
+  /* ── Pasos numerados ───────────────────────────────────────── */
+  .steps { counter-reset: step; margin: 12px 0; }
+  .step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+  }
+  .step-num {
+    counter-increment: step;
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-text { font-size: 12px; color: #333; line-height: 1.5; flex: 1; }
+  .step-text strong { color: #1a1a1a; }
+
+  /* ── Tablas ────────────────────────────────────────────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 20px 0;
+    font-size: 11.5px;
+  }
+  th {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.3px;
+  }
+  td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #fafafa; }
+  tr:hover td { background: #fff8f3; }
+
+  /* ── Alertas / avisos ──────────────────────────────────────── */
+  .alert {
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-text { flex: 1; line-height: 1.5; }
+  .alert-warn  { background: #FFF3E0; border-left: 4px solid #F97316; }
+  .alert-danger { background: #FFEBEE; border-left: 4px solid #E53935; }
+  .alert-ok    { background: #E8F5E9; border-left: 4px solid #43A047; }
+  .alert-info  { background: #E3F2FD; border-left: 4px solid #1E88E5; }
+
+  /* ── Badges de estado ──────────────────────────────────────── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .badge-orange  { background: #FFF3E0; color: #E65100; }
+  .badge-red     { background: #FFEBEE; color: #B71C1C; }
+  .badge-green   { background: #E8F5E9; color: #1B5E20; }
+  .badge-blue    { background: #E3F2FD; color: #1565C0; }
+  .badge-gray    { background: #F5F5F5; color: #424242; }
+  .badge-dark    { background: #1a1a1a; color: #fff; }
+  .badge-yellow  { background: #FFF9C4; color: #F57F17; }
+
+  /* ── Columnas de 2 paneles ─────────────────────────────────── */
+  .cols-2 { display: flex; gap: 24px; margin: 12px 0; }
+  .cols-2 > * { flex: 1; }
+
+  /* ── Checklist ─────────────────────────────────────────────── */
+  .checklist { margin: 10px 0; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 12px;
+  }
+  .check-box {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── Reglas ────────────────────────────────────────────────── */
+  .rules { margin: 10px 0; }
+  .rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 12px;
+    color: #333;
+  }
+  .rule-x {
+    color: #E53935;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+    width: 20px;
+    text-align: center;
+  }
+  .rule-ok {
+    color: #43A047;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+    width: 20px;
+    text-align: center;
+  }
+
+  /* ── Flujo de turno ────────────────────────────────────────── */
+  .flujo {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 16px 0;
+  }
+  .flujo-item {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .flujo-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+    flex-shrink: 0;
+  }
+  .flujo-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #F97316;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .flujo-connector {
+    width: 2px;
+    background: #F97316;
+    flex: 1;
+    min-height: 20px;
+    margin-top: 0;
+  }
+  .flujo-item:last-child .flujo-connector { background: transparent; }
+  .flujo-content {
+    padding: 4px 0 20px 8px;
+    flex: 1;
+  }
+  .flujo-momento {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #F97316;
+    letter-spacing: 0.5px;
+  }
+  .flujo-text { font-size: 12px; color: #333; margin-top: 2px; line-height: 1.5; }
+
+  /* ── Print ─────────────────────────────────────────────────── */
+  @media print {
+    body { font-size: 11px; }
+    .cover { min-height: auto; height: 100vh; }
+    .section { page-break-before: always; padding: 36px 48px; }
+    table { font-size: 10.5px; }
+    .no-print { display: none; }
+    @page { margin: 15mm 15mm; size: A4; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ PORTADA ═══════════════ -->
+<div class="cover">
+  <div class="cover-logo">COWSINS</div>
+  <div class="cover-sub">Burgers</div>
+  <div class="cover-title">Manual Operativo</div>
+  <div class="cover-for">Para encargados de turno</div>
+  <p style="color:#777; font-size:12px; margin-top:24px; max-width:420px;">
+    Esta planilla es tu herramienta de trabajo diario. Acá se gestiona el stock, los pedidos,
+    las recepciones de mercadería y el cierre de caja de cada turno.
+  </p>
+  <div class="cover-date">Versión Junio 2026</div>
+</div>
+
+<!-- ═══════════════ ÍNDICE ═══════════════ -->
+<div class="toc">
+  <h2>Contenido</h2>
+  <div class="toc-item">
+    <span class="toc-item-title">1. Flujo del turno</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-item">
+    <span class="toc-item-title">2. STOCK — cómo leer el estado del inventario</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Estados, columna A Pedir, qué no tocar</div>
+  <div class="toc-item">
+    <span class="toc-item-title">3. PEDIDOS — cómo gestionar pedidos a proveedores</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Crear pedido · Registrar recepción · Cuándo marcar LISTO · Estados</div>
+  <div class="toc-item">
+    <span class="toc-item-title">4. MOV_STOCK — movimientos manuales de stock</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Tipos de movimiento · Qué cargar · Qué no tocar</div>
+  <div class="toc-item">
+    <span class="toc-item-title">5. CIERRE DE CAJA — cierre al final del turno</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Apertura · Cierre · Diferencias · Cuándo confirmar</div>
+  <div class="toc-item">
+    <span class="toc-item-title">6. Reglas generales — qué no tocar</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-item">
+    <span class="toc-item-title">7. Si algo salió mal</span>
+    <span class="toc-item-num">→</span>
+  </div>
+</div>
+
+<!-- ═══════════════ 1. FLUJO DEL TURNO ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div>
+      <div class="section-title">Flujo del turno</div>
+      <div class="section-desc">Qué hacer en cada momento del turno</div>
+    </div>
+  </div>
+
+  <div class="flujo">
+    <div class="flujo-item">
+      <div class="flujo-line"><div class="flujo-dot"></div><div class="flujo-connector"></div></div>
+      <div class="flujo-content">
+        <div class="flujo-momento">Al entrar</div>
+        <div class="flujo-text">
+          Abrí la hoja <strong>STOCK</strong> y revisá si hay insumos en estado <span class="badge badge-red">CRÍTICO</span> o <span class="badge badge-orange">BAJO</span>.<br>
+          Revisá también la columna <strong>A Pedir</strong> como referencia para decidir si hay que hacer un pedido.
+        </div>
+      </div>
+    </div>
+    <div class="flujo-item">
+      <div class="flujo-line"><div class="flujo-dot"></div><div class="flujo-connector"></div></div>
+      <div class="flujo-content">
+        <div class="flujo-momento">Si necesitás pedir mercadería</div>
+        <div class="flujo-text">
+          Creá un pedido nuevo en la hoja <strong>PEDIDOS</strong> con el proveedor, insumo y cantidad.<br>
+          <em>Ver sección 3 para el paso a paso completo.</em>
+        </div>
+      </div>
+    </div>
+    <div class="flujo-item">
+      <div class="flujo-line"><div class="flujo-dot"></div><div class="flujo-connector"></div></div>
+      <div class="flujo-content">
+        <div class="flujo-momento">Cuando llega mercadería</div>
+        <div class="flujo-text">
+          Completá la fila correspondiente en <strong>PEDIDOS</strong> con fecha, cantidad recibida y precio.<br>
+          Cuando tenés remito o factura, completá esos datos también.<br>
+          Solo marcá <strong>LISTO = SÍ</strong> cuando tenés todo completo (cantidad + precio + remito/factura).
+        </div>
+      </div>
+    </div>
+    <div class="flujo-item">
+      <div class="flujo-line"><div class="flujo-dot"></div><div class="flujo-connector"></div></div>
+      <div class="flujo-content">
+        <div class="flujo-momento">Si hubo merma, rotura o ajuste</div>
+        <div class="flujo-text">
+          Cargá el movimiento en <strong>MOV_STOCK</strong> con tipo SALIDA o AJUSTE según corresponda.<br>
+          <em>Ver sección 4.</em>
+        </div>
+      </div>
+    </div>
+    <div class="flujo-item">
+      <div class="flujo-line"><div class="flujo-dot"></div><div class="flujo-connector"></div></div>
+      <div class="flujo-content">
+        <div class="flujo-momento">Al cerrar el turno</div>
+        <div class="flujo-text">
+          Completá el <strong>CIERRE DE CAJA</strong>: ventas en efectivo (según We Menu), efectivo contado, gastos chicos si hubo.<br>
+          Cuando todo está cargado y revisado, poné <strong>SÍ</strong> en "Confirmar Cierre".<br>
+          <em>Ver sección 5.</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-warn">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-text">
+      <strong>Los empleados del turno no tienen acceso a la planilla de Gestión.</strong>
+      Solo se trabaja en la planilla OPERATIVO.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 2. STOCK ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div>
+      <div class="section-title">STOCK</div>
+      <div class="section-desc">Cómo leer el estado del inventario — solo consulta</div>
+    </div>
+  </div>
+
+  <p>La hoja STOCK muestra el inventario actual. <strong>El sistema la actualiza solo</strong> cada vez que se recibe mercadería o se registra un movimiento. <strong>No hay que tocar nada en esta hoja.</strong></p>
+
+  <h3>Columnas principales</h3>
+  <table>
+    <tr><th>Columna</th><th>Qué muestra</th></tr>
+    <tr><td><strong>Nombre</strong></td><td>Nombre del insumo</td></tr>
+    <tr><td><strong>Unidad</strong></td><td>Unidad en que se mide el stock (caja, kg, litro, etc.)</td></tr>
+    <tr><td><strong>Stock Actual</strong></td><td>Cantidad disponible ahora mismo — se calcula solo</td></tr>
+    <tr><td><strong>Stock Mín</strong></td><td>Mínimo aceptable. Por debajo de este número hay que evaluar si pedir</td></tr>
+    <tr><td><strong>Stock Máx</strong></td><td>Máximo recomendado</td></tr>
+    <tr><td><strong>Estado</strong></td><td>OK / BAJO / CRÍTICO / EXCESO</td></tr>
+    <tr><td><strong>A Pedir</strong></td><td>Referencia del sistema: cuánto faltaría para llegar al máximo</td></tr>
+    <tr><td><strong>Proveedor Principal</strong></td><td>A quién se le compra ese insumo</td></tr>
+  </table>
+
+  <h3>Estados del stock</h3>
+  <table>
+    <tr><th>Estado</th><th>Qué significa</th><th>Qué hacés</th></tr>
+    <tr>
+      <td><span class="badge badge-green">OK</span></td>
+      <td>Stock dentro del rango normal</td>
+      <td>Nada</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">BAJO</span></td>
+      <td>Por debajo del mínimo</td>
+      <td>Evaluar si hay que hacer un pedido</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-red">CRÍTICO</span></td>
+      <td>En cero o casi cero</td>
+      <td>Avisar al encargado y hacer pedido urgente</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-blue">EXCESO</span></td>
+      <td>Por encima del máximo recomendado</td>
+      <td>No pedir más de ese insumo</td>
+    </tr>
+  </table>
+
+  <div class="alert alert-info">
+    <div class="alert-icon">ℹ</div>
+    <div class="alert-text">
+      <strong>La columna "A Pedir" es solo una referencia.</strong> El sistema calcula cuánto falta para llegar al máximo, pero <strong>no genera un pedido automático</strong>. Vos decidís si corresponde pedir o no.
+    </div>
+  </div>
+
+  <div class="alert alert-danger">
+    <div class="alert-icon">🚫</div>
+    <div class="alert-text">
+      <strong>No modificar ninguna celda de la hoja STOCK.</strong> El stock actual depende de las fórmulas. Si algo parece incorrecto, avisarle a Santi o Toto.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 3. PEDIDOS ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div>
+      <div class="section-title">PEDIDOS</div>
+      <div class="section-desc">Gestionar pedidos a proveedores y registrar recepciones de mercadería</div>
+    </div>
+  </div>
+
+  <h3>Crear un pedido nuevo</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">Ir a la <strong>última fila vacía</strong> de la hoja PEDIDOS</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">Escribir el <strong>nombre del proveedor</strong> en columna D (Nombre_Proveedor)</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">Escribir el <strong>nombre del insumo</strong> en columna E (Nombre_Insumo) — el sistema completa el ID, la unidad y el precio automáticamente</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text">Escribir la <strong>cantidad pedida</strong> en columna K (Cant_Pedida)</div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-text">El pedido queda en estado <span class="badge badge-gray">BORRADOR</span> — esperás la mercadería</div>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <div class="alert-icon">ℹ</div>
+    <div class="alert-text">
+      <strong>No tocar:</strong> columnas A (ID_Línea), B (ID_Pedido), C (Estado), D (Fecha_Pedido), G (ID_Insumo), I (Unidad), J (Cant_Sugerida), O (Subtotal), S (Estado_Recepción) — el sistema las completa solo.
+    </div>
+  </div>
+
+  <h3>Registrar que llegó la mercadería — dos pasos</h3>
+  <p>La recepción se puede hacer en dos momentos si la factura no llegó junto con la mercadería.</p>
+
+  <h4>Paso 1 — Cuando llega físicamente la mercadería</h4>
+  <table>
+    <tr><th>Columna</th><th>Qué cargar</th></tr>
+    <tr><td><strong>L — Fecha_Recepción</strong></td><td>Fecha en que llegó la mercadería</td></tr>
+    <tr><td><strong>M — Cant_Recibida</strong></td><td>Cuántas unidades llegaron efectivamente</td></tr>
+  </table>
+  <p style="color:#555; font-style:italic;">Si la factura no llegó todavía, podés guardar el pedido en este estado y completar el resto después.</p>
+
+  <h4>Paso 2 — Cuando tenés el remito o la factura</h4>
+  <table>
+    <tr><th>Columna</th><th>Qué cargar</th></tr>
+    <tr><td><strong>N — Precio_Unitario</strong></td><td>Precio por unidad según el remito o factura</td></tr>
+    <tr><td><strong>P — Nro_Remito</strong></td><td>Número del remito</td></tr>
+    <tr><td><strong>Q — Nro_Factura</strong></td><td>Número de factura (cuando esté disponible)</td></tr>
+    <tr><td><strong>R — Monto_Total_Factura</strong></td><td>Monto total de la factura</td></tr>
+  </table>
+
+  <h3>¿Cuándo marcar LISTO = SÍ? (columna T)</h3>
+  <p>Marcá SÍ <strong>solo cuando tenés todo completo</strong>:</p>
+  <div class="checklist">
+    <div class="check-item"><div class="check-box"></div>Cantidad recibida cargada (col M)</div>
+    <div class="check-item"><div class="check-box"></div>Precio unitario cargado (col N)</div>
+    <div class="check-item"><div class="check-box"></div>Número de remito o factura (col P o Q)</div>
+    <div class="check-item"><div class="check-box"></div>Monto total de factura (col R)</div>
+  </div>
+
+  <div class="alert alert-danger">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-text">
+      <strong>No marcar LISTO sin tener precio y remito/factura.</strong><br>
+      Al marcar LISTO el sistema registra la compra en Gestión y actualiza el stock automáticamente. Si hay un error, no intentes modificarlo: avisá a Santi o Toto.
+    </div>
+  </div>
+
+  <div class="alert alert-ok">
+    <div class="alert-icon">✓</div>
+    <div class="alert-text">
+      <strong>Qué pasa cuando marcás LISTO:</strong><br>
+      → La compra se registra automáticamente en Gestión<br>
+      → El stock del insumo sube automáticamente<br>
+      → El estado del pedido pasa a TRASPASADO en unos minutos<br>
+      <em>Si no cambia a TRASPASADO o aparece un error, avisarle a Santi o Toto.</em>
+    </div>
+  </div>
+
+  <h3>Estados posibles en PEDIDOS</h3>
+  <table>
+    <tr><th>Estado</th><th>Qué significa</th><th>Qué hacés</th></tr>
+    <tr>
+      <td><span class="badge badge-gray">PEDIDO SUGERIDO</span></td>
+      <td>Referencia de reposición según stock. <strong>No es un pedido real.</strong></td>
+      <td>Decidís si corresponde crear un pedido real</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-gray">BORRADOR</span></td>
+      <td>Pedido creado, sin datos de recepción</td>
+      <td>Esperás la mercadería</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-blue">PENDIENTE RECEPCIÓN</span></td>
+      <td>Tiene fecha de entrega programada</td>
+      <td>Esperás</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-red">ATRASADO</span></td>
+      <td>La fecha de entrega pasó y no llegó</td>
+      <td>Contactar al proveedor</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">REVISAR CANTIDAD</span></td>
+      <td>Llegó más de lo pedido</td>
+      <td>Consultar con el encargado</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">REVISAR RECEPCIÓN</span></td>
+      <td>Llegó menos de lo pedido</td>
+      <td>Completar cuando llegue el resto</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-yellow">CONFIRMAR PASE A GESTIÓN</span></td>
+      <td>Datos completos — listo para confirmar</td>
+      <td>Marcar LISTO = SÍ</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-green">TRASPASADO</span></td>
+      <td>Procesado y registrado en Gestión</td>
+      <td>Nada — todo OK</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-gray">CANCELADO</span></td>
+      <td>Pedido cancelado</td>
+      <td>Nada</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-red">REVISAR Y CONFIRMAR</span></td>
+      <td>⚠ Problema detectado</td>
+      <td><strong>Avisarle a Santi o Toto para que lo revisen</strong></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ═══════════════ 4. MOV_STOCK ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div>
+      <div class="section-title">MOV_STOCK</div>
+      <div class="section-desc">Registrar movimientos de stock que no vienen de un pedido</div>
+    </div>
+  </div>
+
+  <p>Esta hoja se usa para registrar <strong>salidas, mermas, roturas, vencimientos, ajustes y conteos físicos</strong>.</p>
+
+  <div class="alert alert-info">
+    <div class="alert-icon">ℹ</div>
+    <div class="alert-text">
+      <strong>Las entradas por pedidos se registran automáticamente</strong> cuando se marca LISTO en PEDIDOS. No hace falta cargarlas acá.
+    </div>
+  </div>
+
+  <h3>Tipos de movimiento</h3>
+  <table>
+    <tr><th>Tipo</th><th>Cuándo usarlo</th></tr>
+    <tr>
+      <td><span class="badge badge-blue">ENTRADA</span></td>
+      <td>Mercadería que entró <strong>sin pasar por un pedido</strong> (compra directa, donación, etc.)</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-red">SALIDA</span></td>
+      <td>Merma, rotura, vencimiento, consumo no registrado</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-green">AJUSTE_POSITIVO</span></td>
+      <td>El conteo físico da <strong>más</strong> de lo que muestra el sistema</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-orange">AJUSTE_NEGATIVO</span></td>
+      <td>El conteo físico da <strong>menos</strong> de lo que muestra el sistema</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-gray">CONTEO</span></td>
+      <td>Solo deja registro de cuánto hay físicamente. <strong>No suma ni resta al stock.</strong></td>
+    </tr>
+  </table>
+
+  <h3>Qué cargar en cada movimiento</h3>
+  <table>
+    <tr><th>Columna</th><th>Qué cargar</th><th>Ejemplo</th></tr>
+    <tr>
+      <td><strong>C — Tipo</strong></td>
+      <td>Uno de los cinco tipos de arriba</td>
+      <td>SALIDA</td>
+    </tr>
+    <tr>
+      <td><strong>E — Nombre_Insumo</strong></td>
+      <td>Nombre del insumo tal como aparece en STOCK</td>
+      <td>PAN</td>
+    </tr>
+    <tr>
+      <td><strong>F — Cantidad</strong></td>
+      <td>Siempre en positivo, en la unidad que muestra la planilla</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td><strong>H — Motivo</strong></td>
+      <td>Descripción breve de por qué</td>
+      <td>"merma por vencimiento", "rotura accidental"</td>
+    </tr>
+    <tr>
+      <td><strong>J — Registrado_Por</strong></td>
+      <td>Tu nombre</td>
+      <td>Bauti</td>
+    </tr>
+  </table>
+
+  <div class="alert alert-ok">
+    <div class="alert-icon">✓</div>
+    <div class="alert-text">
+      El sistema completa automáticamente: ID_Mov, Fecha, ID_Insumo y Unidad.
+    </div>
+  </div>
+
+  <h3>Columnas que NO se tocan</h3>
+  <table>
+    <tr><th>Columna</th><th>Por qué no tocar</th></tr>
+    <tr><td><strong>A — ID_Mov</strong></td><td>Se genera solo</td></tr>
+    <tr><td><strong>B — Fecha</strong></td><td>Se genera sola</td></tr>
+    <tr><td><strong>D — ID_Insumo</strong></td><td>Se completa solo al escribir el nombre del insumo</td></tr>
+    <tr><td><strong>G — Unidad</strong></td><td>Se completa sola</td></tr>
+    <tr><td><strong>I — ID_Pedido</strong></td><td>Solo aplica a movimientos originados en pedidos</td></tr>
+    <tr><td><strong>L — ID_Linea_Origen</strong></td><td>Referencia interna del sistema</td></tr>
+  </table>
+
+  <div class="alert alert-danger">
+    <div class="alert-icon">🚫</div>
+    <div class="alert-text">
+      <strong>Nunca borrar filas de MOV_STOCK.</strong> El stock actual depende del historial completo. Si se borra una fila, el stock queda desincronizado.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 5. CIERRE DE CAJA ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div>
+      <div class="section-title">CIERRE DE CAJA</div>
+      <div class="section-desc">Registro de apertura y cierre por turno</div>
+    </div>
+  </div>
+
+  <h3>Al abrir el turno — verificar el cambio</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">Mirá la columna <strong>"Cambio del turno anterior"</strong> — ese es el efectivo que dejó el turno anterior en la caja</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">Contá físicamente el efectivo en la caja</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <strong>Si el monto coincide</strong> con "Cambio del turno anterior" → marcá directamente <strong>OK_Apertura = SÍ</strong> y el sistema completa "Inicio de caja" solo<br>
+        <strong>Si el monto es diferente</strong> → escribí el valor real contado en <strong>"Inicio de caja (cambio real)"</strong> ANTES de marcar OK_Apertura = SÍ
+      </div>
+    </div>
+  </div>
+
+  <h3>Al cerrar el turno — qué cargar</h3>
+  <table>
+    <tr><th>Columna</th><th>Qué cargar</th><th>Importante</th></tr>
+    <tr>
+      <td><strong>C — Turno</strong></td>
+      <td>MEDIODÍA o NOCHE</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong>D — Responsable</strong></td>
+      <td>Tu nombre</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong>H — Ventas_Efectivo</strong></td>
+      <td>Lo que We Menu informa como cobrado en efectivo durante el turno</td>
+      <td>Solo efectivo — no incluir Rappi, PedidosYa, tarjetas, QR ni transferencias</td>
+    </tr>
+    <tr>
+      <td><strong>I — Efectivo_Caja</strong></td>
+      <td>Lo que contás físicamente en la caja al momento del cierre</td>
+      <td>Total físico, independientemente de lo que diga el sistema</td>
+    </tr>
+    <tr>
+      <td><strong>J — Gastos_Chicos</strong></td>
+      <td>Si se pagó algo con efectivo de la caja durante el turno</td>
+      <td>Solo si hubo gastos pequeños en efectivo</td>
+    </tr>
+    <tr>
+      <td><strong>K — Concepto_Gastos</strong></td>
+      <td>En qué se gastó</td>
+      <td>Texto libre: "cinta", "yerba", "limpieza", etc.</td>
+    </tr>
+    <tr>
+      <td><strong>J — Confirmar Cierre</strong></td>
+      <td>Escribí <strong>SÍ</strong> cuando todo esté cargado y verificado</td>
+      <td>Una vez que pusiste SÍ, la fila queda bloqueada</td>
+    </tr>
+  </table>
+
+  <div class="alert alert-ok">
+    <div class="alert-icon">✓</div>
+    <div class="alert-text">
+      El sistema calcula automáticamente el <strong>Cambio al cierre de turno</strong> (lo que queda para el próximo turno), el <strong>Efectivo_Sobre</strong> y la <strong>Diferencia</strong>. También genera el Estado_Alerta: <span class="badge badge-green">OK</span> si está correcto, <span class="badge badge-orange">Faltante</span> o <span class="badge badge-blue">Sobrante</span> si hay diferencia.
+    </div>
+  </div>
+
+  <h3>Ejemplo real de cierres</h3>
+  <table>
+    <tr><th>Turno</th><th>Responsable</th><th>Ventas Efect.</th><th>Efectivo Caja</th><th>Gastos Chicos</th><th>Cambio cierre</th><th>Diferencia</th><th>Alerta</th></tr>
+    <tr>
+      <td>Noche 1/6</td><td>Bauti</td>
+      <td>$156.400</td><td>$192.150</td><td>—</td>
+      <td>$162.000</td><td style="color:#B71C1C">-$10.000</td>
+      <td><span class="badge badge-red">Faltante $10.000</span></td>
+    </tr>
+    <tr>
+      <td>Mediodía 2/6</td><td>Joaco</td>
+      <td>$99.800</td><td>$127.250</td><td>$2.700 cinta</td>
+      <td>$30.000</td><td>$0</td>
+      <td><span class="badge badge-green">OK</span></td>
+    </tr>
+    <tr>
+      <td>Noche 2/6</td><td>Marti</td>
+      <td>$396.000</td><td>$426.540</td><td>—</td>
+      <td>$30.000</td><td style="color:#1B5E20">+$340</td>
+      <td><span class="badge badge-blue">Sobrante $340</span></td>
+    </tr>
+    <tr>
+      <td>Noche 4/6</td><td>Marti</td>
+      <td>$987.094</td><td>$1.025.640</td><td>—</td>
+      <td>$31.640</td><td style="color:#1B5E20">+$8.246</td>
+      <td><span class="badge badge-blue">Sobrante $8.246</span></td>
+    </tr>
+  </table>
+
+  <div class="alert alert-warn">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-text">
+      <strong>Una vez que pusiste SÍ en Confirmar Cierre, la fila queda bloqueada.</strong><br>
+      Si hay un error antes de confirmar, podés corregir. Si ya pusiste SÍ, no intentes modificarlo: <strong>avisarle a Santi o Toto</strong>.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 6. REGLAS GENERALES ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <div>
+      <div class="section-title">Reglas generales</div>
+      <div class="section-desc">Qué no tocar bajo ninguna circunstancia</div>
+    </div>
+  </div>
+
+  <h3>Hojas que no se tocan</h3>
+  <div class="rules">
+    <div class="rule-item"><div class="rule-x">✗</div><div><strong>STOCK</strong> — solo lectura. No modificar ninguna celda.</div></div>
+    <div class="rule-item"><div class="rule-x">✗</div><div><strong>REFERENCIAS PROVEEDORES</strong> — se actualiza automáticamente desde Gestión.</div></div>
+    <div class="rule-item"><div class="rule-x">✗</div><div><strong>REFERENCIAS INSUMOS</strong> — se actualiza automáticamente desde Gestión.</div></div>
+    <div class="rule-item"><div class="rule-x">✗</div><div><strong>DATOS_GESTION</strong> — hoja técnica interna, no visible. No abrir, no modificar.</div></div>
+  </div>
+
+  <h3>En PEDIDOS — columnas que no se tocan</h3>
+  <div class="cols-2">
+    <div>
+      <div class="rules">
+        <div class="rule-item"><div class="rule-x">✗</div>A — ID_Línea (se genera solo)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>B — ID_Pedido (se genera solo)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>C — Estado (se calcula solo)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>D — Fecha_Pedido (se genera sola)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>G — ID_Insumo (se completa solo)</div>
+      </div>
+    </div>
+    <div>
+      <div class="rules">
+        <div class="rule-item"><div class="rule-x">✗</div>I — Unidad (se completa sola)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>J — Cant_Sugerida (referencia del sistema)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>O — Subtotal (se calcula solo)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>S — Estado_Recepción (se calcula solo)</div>
+        <div class="rule-item"><div class="rule-x">✗</div>Columna V en adelante (control interno)</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Reglas que aplican a toda la planilla</h3>
+  <div class="rules">
+    <div class="rule-item"><div class="rule-x">✗</div><div><strong>Nunca borrar filas</strong> en ninguna hoja — el stock y los registros dependen del historial completo</div></div>
+    <div class="rule-item"><div class="rule-x">✗</div><div><strong>Nunca modificar fórmulas</strong> — si una celda tiene fórmula, no tocarla</div></div>
+    <div class="rule-item"><div class="rule-x">✗</div><div><strong>En CIERRE DE CAJA:</strong> no borrar ni modificar filas ya confirmadas con SÍ</div></div>
+    <div class="rule-item"><div class="rule-x">✗</div><div><strong>En MOV_STOCK:</strong> nunca borrar filas — el stock depende del historial completo</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ 7. SI ALGO SALIÓ MAL ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">7</div>
+    <div>
+      <div class="section-title">Si algo salió mal</div>
+      <div class="section-desc">Cómo actuar ante cualquier error o duda</div>
+    </div>
+  </div>
+
+  <div class="alert alert-danger" style="margin-bottom:20px;">
+    <div class="alert-icon">🚨</div>
+    <div class="alert-text" style="font-size:13px;">
+      <strong>Regla principal: no intentar arreglarlo solo.</strong><br>
+      Cualquier intento de corrección sin saber exactamente qué se está haciendo puede empeorar el problema.
+    </div>
+  </div>
+
+  <h3>Qué hacer</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Pará lo que estás haciendo</strong> — no intentar corregir ni modificar nada más</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Escribí en la columna Observaciones</strong> del pedido o movimiento qué pasó exactamente</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Avisarle a Santi o Toto</strong> para que lo revisen y corrijan</div>
+    </div>
+  </div>
+
+  <h3>Situaciones comunes</h3>
+  <table>
+    <tr><th>Situación</th><th>Qué hacer</th></tr>
+    <tr><td>Marqué LISTO por error</td><td>Avisarle a Santi o Toto inmediatamente</td></tr>
+    <tr><td>Borré una fila sin querer</td><td>No intentar recrearla — avisar inmediatamente</td></tr>
+    <tr><td>El pedido quedó en REVISAR Y CONFIRMAR</td><td>Avisar a Santi o Toto, escribir observación</td></tr>
+    <tr><td>El pedido no pasó a TRASPASADO después de varios minutos</td><td>Avisar a Santi o Toto</td></tr>
+    <tr><td>La diferencia de caja es muy grande</td><td>Volver a contar físicamente, si persiste avisar</td></tr>
+    <tr><td>Un proveedor o insumo no aparece en el sistema</td><td>Avisar al responsable de gestión para que lo cargue</td></tr>
+    <tr><td>Una fórmula muestra error o un dato parece incorrecto</td><td>No tocar — avisar a Santi o Toto</td></tr>
+  </table>
+
+  <div style="margin-top:40px; padding:24px; background:#1a1a1a; border-radius:8px; text-align:center; color:#fff;">
+    <div style="font-size:16px; font-weight:700; margin-bottom:8px;">¿Dudas o problemas?</div>
+    <div style="font-size:13px; color:#aaa;">Contactar a <strong style="color:#F97316;">Santi o Toto</strong></div>
+  </div>
+</div>
+
+</body>
+</html>
