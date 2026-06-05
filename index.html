@@ -730,16 +730,16 @@
 
   <h3>Qué cargar en cada movimiento</h3>
   <table>
-    <tr><th>Columna</th><th>Qué cargar</th><th>Ejemplo</th></tr>
+    <tr><th>Columna</th><th>Qué cargar</th><th>Opciones del desplegable</th></tr>
     <tr>
       <td><strong>C — Tipo</strong></td>
-      <td>Uno de los cinco tipos de arriba</td>
-      <td>SALIDA</td>
+      <td>Elegí del desplegable</td>
+      <td>ENTRADA · SALIDA · AJUSTE_POSITIVO · AJUSTE_NEGATIVO · CONTEO</td>
     </tr>
     <tr>
       <td><strong>E — Nombre_Insumo</strong></td>
       <td>Nombre del insumo tal como aparece en STOCK</td>
-      <td>PAN</td>
+      <td>PAN, PAPAS, CARNE…</td>
     </tr>
     <tr>
       <td><strong>F — Cantidad</strong></td>
@@ -748,13 +748,18 @@
     </tr>
     <tr>
       <td><strong>H — Motivo</strong></td>
-      <td>Descripción breve de por qué</td>
-      <td>"merma por vencimiento", "rotura accidental"</td>
+      <td>Elegí del desplegable el motivo más cercano</td>
+      <td>Merma · Vencimiento · Rotura · Consumo interno · Ajuste por conteo · Compra directa · Devolución a proveedor · Otro</td>
     </tr>
     <tr>
       <td><strong>J — Registrado_Por</strong></td>
       <td>Tu nombre</td>
-      <td>Bauti</td>
+      <td>Bauti, Joaco, Marti…</td>
+    </tr>
+    <tr>
+      <td><strong>K — Observaciones</strong></td>
+      <td>Detalle adicional si el motivo del desplegable no alcanza para explicar</td>
+      <td>Texto libre</td>
     </tr>
   </table>
 
@@ -762,6 +767,23 @@
     <div class="alert-icon">✓</div>
     <div class="alert-text">
       El sistema completa automáticamente: ID_Mov, Fecha, ID_Insumo y Unidad.
+    </div>
+  </div>
+
+  <h3>¿Qué pasa si falta cargar algún dato?</h3>
+  <table>
+    <tr><th>Dato faltante</th><th>Consecuencia</th></tr>
+    <tr><td><strong>Tipo</strong></td><td>El sistema no genera el ID_Mov — el movimiento queda sin registrar</td></tr>
+    <tr><td><strong>Nombre_Insumo</strong></td><td>El sistema no puede asociar el movimiento a ningún insumo — el stock no se actualiza</td></tr>
+    <tr><td><strong>Cantidad</strong></td><td>El movimiento existe pero con cantidad 0 — el stock queda mal</td></tr>
+    <tr><td><strong>Motivo</strong></td><td>El movimiento es válido pero queda sin trazabilidad — completarlo siempre</td></tr>
+    <tr><td><strong>Registrado_Por</strong></td><td>No hay forma de saber quién lo cargó — completarlo siempre</td></tr>
+  </table>
+
+  <div class="alert alert-warn">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-text">
+      <strong>Un movimiento sin Tipo o sin Nombre_Insumo no actualiza el stock.</strong> Si cargaste una fila incompleta, no intentes borrarla — avisale a Santi o Toto para que la corrijan.
     </div>
   </div>
 
