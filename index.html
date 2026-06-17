@@ -390,13 +390,18 @@
     <span class="toc-item-title">5. CIERRE DE CAJA — cierre al final del turno</span>
     <span class="toc-item-num">→</span>
   </div>
-  <div class="toc-sub">Apertura · Cierre · Diferencias · Cuándo confirmar</div>
+  <div class="toc-sub">Apertura · Cierre · Ventas PedidosYa · Diferencias · Cuándo confirmar</div>
   <div class="toc-item">
-    <span class="toc-item-title">6. Reglas generales — qué no tocar</span>
+    <span class="toc-item-title">6. VENTAS APPS — ventas por canal de delivery</span>
+    <span class="toc-item-num">→</span>
+  </div>
+  <div class="toc-sub">Rappi · PedidosYa · precio automático · total automático</div>
+  <div class="toc-item">
+    <span class="toc-item-title">7. Reglas generales — qué no tocar</span>
     <span class="toc-item-num">→</span>
   </div>
   <div class="toc-item">
-    <span class="toc-item-title">7. Si algo salió mal</span>
+    <span class="toc-item-title">8. Si algo salió mal</span>
     <span class="toc-item-num">→</span>
   </div>
 </div>
@@ -917,63 +922,76 @@
     <tr>
       <td><strong>H — Ventas_Efectivo</strong></td>
       <td>Lo que We Menu informa como cobrado en efectivo durante el turno</td>
-      <td>Solo efectivo — no incluir Rappi, PedidosYa, tarjetas, QR ni transferencias</td>
+      <td>Solo ventas de Way Menu en efectivo — no incluir Rappi, tarjetas, QR ni transferencias</td>
     </tr>
     <tr>
-      <td><strong>I — Efectivo_Caja</strong></td>
+      <td><strong>I — Ventas_Efectivo_PedidosYa</strong></td>
+      <td>El efectivo de PedidosYa que entró físicamente a la caja del turno</td>
+      <td>Buscalo en el resumen del turno en la app de PedidosYa. Si no hubo o fue $0, poné 0.</td>
+    </tr>
+    <tr>
+      <td><strong>J — Efectivo_Caja</strong></td>
       <td>Lo que contás físicamente en la caja al momento del cierre</td>
       <td>Total físico, independientemente de lo que diga el sistema</td>
     </tr>
     <tr>
-      <td><strong>J — Gastos_Chicos</strong></td>
+      <td><strong>K — Gastos_Chicos</strong></td>
       <td>Si se pagó algo con efectivo de la caja durante el turno</td>
       <td>Solo si hubo gastos pequeños en efectivo</td>
     </tr>
     <tr>
-      <td><strong>K — Concepto_Gastos</strong></td>
+      <td><strong>L — Concepto_Gastos</strong></td>
       <td>En qué se gastó</td>
       <td>Texto libre: "cinta", "yerba", "limpieza", etc.</td>
     </tr>
     <tr>
-      <td><strong>J — Confirmar Cierre</strong></td>
+      <td><strong>M — Cambio al cierre</strong></td>
+      <td>El efectivo que dejás en la caja para el próximo turno</td>
+      <td>Separalo físicamente antes de llevar el sobre</td>
+    </tr>
+    <tr>
+      <td><strong>R — Confirmar Cierre</strong></td>
       <td>Escribí <strong>SÍ</strong> cuando todo esté cargado y verificado</td>
-      <td>Una vez que pusiste SÍ, la fila queda bloqueada</td>
+      <td>Una vez que pusiste SÍ, la fila queda bloqueada y no se puede modificar</td>
     </tr>
   </table>
 
   <div class="alert alert-ok">
     <div class="alert-icon">✓</div>
     <div class="alert-text">
-      El sistema calcula automáticamente el <strong>Cambio al cierre de turno</strong> (lo que queda para el próximo turno), el <strong>Efectivo_Sobre</strong> y la <strong>Diferencia</strong>. También genera el Estado_Alerta: <span class="badge badge-green">OK</span> si está correcto, <span class="badge badge-orange">Faltante</span> o <span class="badge badge-blue">Sobrante</span> si hay diferencia.
+      El sistema calcula automáticamente:<br>
+      • <strong>Efectivo_Sobre (N)</strong> = Efectivo caja − Cambio al cierre → es lo que va al sobre<br>
+      • <strong>Diferencia (O)</strong> = Efectivo caja − (Inicio de caja + Ventas Way Menu + Ventas PedidosYa − Gastos) → idealmente $0<br>
+      • <strong>Estado_Alerta (P)</strong>: <span class="badge badge-green">OK</span> si está correcto · <span class="badge badge-red">Faltante $X</span> si falta plata · <span class="badge badge-orange">Sobrante $X</span> si sobra
     </div>
   </div>
 
   <h3>Ejemplo real de cierres</h3>
   <table>
-    <tr><th>Turno</th><th>Responsable</th><th>Ventas Efect.</th><th>Efectivo Caja</th><th>Gastos Chicos</th><th>Cambio cierre</th><th>Diferencia</th><th>Alerta</th></tr>
+    <tr><th>Turno</th><th>Resp.</th><th>Ventas Way Menu</th><th>Ventas PedidosYa</th><th>Efect. Caja</th><th>Gastos</th><th>Cambio cierre</th><th>Diferencia</th><th>Alerta</th></tr>
     <tr>
       <td>Noche 1/6</td><td>Bauti</td>
-      <td>$156.400</td><td>$192.150</td><td>—</td>
+      <td>$156.400</td><td>$0</td><td>$192.150</td><td>—</td>
       <td>$162.000</td><td style="color:#B71C1C">-$10.000</td>
       <td><span class="badge badge-red">Faltante $10.000</span></td>
     </tr>
     <tr>
       <td>Mediodía 2/6</td><td>Joaco</td>
-      <td>$99.800</td><td>$127.250</td><td>$2.700 cinta</td>
+      <td>$99.800</td><td>$0</td><td>$127.250</td><td>$2.700 cinta</td>
       <td>$30.000</td><td>$0</td>
       <td><span class="badge badge-green">OK</span></td>
     </tr>
     <tr>
       <td>Noche 2/6</td><td>Marti</td>
-      <td>$396.000</td><td>$426.540</td><td>—</td>
+      <td>$396.000</td><td>$0</td><td>$426.540</td><td>—</td>
       <td>$30.000</td><td style="color:#1B5E20">+$340</td>
-      <td><span class="badge badge-blue">Sobrante $340</span></td>
+      <td><span class="badge badge-orange">Sobrante $340</span></td>
     </tr>
     <tr>
       <td>Noche 4/6</td><td>Marti</td>
-      <td>$987.094</td><td>$1.025.640</td><td>—</td>
+      <td>$987.094</td><td>$0</td><td>$1.025.640</td><td>—</td>
       <td>$31.640</td><td style="color:#1B5E20">+$8.246</td>
-      <td><span class="badge badge-blue">Sobrante $8.246</span></td>
+      <td><span class="badge badge-orange">Sobrante $8.246</span></td>
     </tr>
   </table>
 
@@ -986,10 +1004,79 @@
   </div>
 </div>
 
-<!-- ═══════════════ 6. REGLAS GENERALES ═══════════════ -->
+<!-- ═══════════════ 6. VENTAS APPS ═══════════════ -->
 <div class="section">
   <div class="section-header">
     <div class="section-num">6</div>
+    <div>
+      <div class="section-title">VENTAS APPS</div>
+      <div class="section-desc">Registrar ventas por canal de delivery — Rappi y PedidosYa</div>
+    </div>
+  </div>
+
+  <p>La hoja <strong>VENTAS APPS</strong> registra cuántas unidades de cada producto se vendieron por Rappi o PedidosYa en cada turno. No es obligatorio hacerlo en el momento — se puede completar al final del turno o al día siguiente.</p>
+
+  <div class="alert alert-info">
+    <div class="alert-icon">ℹ</div>
+    <div class="alert-text">
+      <strong>Diferencia con Ventas_Efectivo_PedidosYa del CIERRE DE CAJA:</strong><br>
+      El CIERRE DE CAJA solo registra el total de efectivo que entró a caja. VENTAS APPS registra el detalle producto por producto (cuántos Cheese Burger, cuántas papas, etc.) y sirve para análisis de ventas.
+    </div>
+  </div>
+
+  <h3>Cómo cargar una venta de app</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">Ir a la hoja <strong>VENTAS APPS</strong> y escribir en la primera fila vacía</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">Elegir el <strong>Canal</strong> del desplegable: <em>Rappi</em> o <em>PedidosYa</em></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">Elegir el <strong>Producto</strong> del desplegable — son los mismos productos cargados en PRECIOS APPS</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text">Escribir las <strong>Unidades</strong> vendidas de ese producto</div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-text">El sistema completa solo: <strong>ID</strong>, <strong>Fecha</strong>, <strong>Periodo</strong>, <strong>Precio</strong> (desde PRECIOS APPS) y <strong>Total</strong> (Unidades × Precio)</div>
+    </div>
+  </div>
+
+  <h3>Columnas que se completan solas</h3>
+  <table>
+    <tr><th>Columna</th><th>Qué hace el sistema</th></tr>
+    <tr><td><strong>A — ID_Venta_App</strong></td><td>Se genera automáticamente (VAPP-0001, VAPP-0002, etc.)</td></tr>
+    <tr><td><strong>B — Fecha</strong></td><td>Se carga sola al agregar el primer dato de la fila</td></tr>
+    <tr><td><strong>C — Periodo</strong></td><td>Mes en formato AAAA-MM (ej: 2026-06) — para filtros mensuales</td></tr>
+    <tr><td><strong>G — Precio_Unitario</strong></td><td>Se busca automáticamente en PRECIOS APPS según Canal + Producto. Si dice <span class="badge badge-red">REVISAR PRECIO</span>, ese producto no tiene precio cargado todavía — avisar a Santi.</td></tr>
+    <tr><td><strong>H — Venta_Total</strong></td><td>Unidades × Precio, calculado solo</td></tr>
+  </table>
+
+  <div class="alert alert-warn">
+    <div class="alert-icon">⚠</div>
+    <div class="alert-text">
+      Si el Precio_Unitario dice <strong>REVISAR PRECIO</strong>, ese canal/producto todavía no está en PRECIOS APPS. No borrés la fila — avisarle a Santi para que cargue el precio. Una vez cargado, Santi puede recalcular los precios con el menú Admin.
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <div class="alert-icon">ℹ</div>
+    <div class="alert-text">
+      Cada línea de pedido de la app es una fila. Si en un turno se vendieron 5 Cheese Burger y 3 Bacon Cheese, son 2 filas separadas. Si hubo ventas de Rappi Y PedidosYa, son filas separadas por canal.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ 7. REGLAS GENERALES ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">7</div>
     <div>
       <div class="section-title">Reglas generales</div>
       <div class="section-desc">Qué no tocar bajo ninguna circunstancia</div>
@@ -1036,10 +1123,10 @@
   </div>
 </div>
 
-<!-- ═══════════════ 7. SI ALGO SALIÓ MAL ═══════════════ -->
+<!-- ═══════════════ 8. SI ALGO SALIÓ MAL ═══════════════ -->
 <div class="section">
   <div class="section-header">
-    <div class="section-num">7</div>
+    <div class="section-num">8</div>
     <div>
       <div class="section-title">Si algo salió mal</div>
       <div class="section-desc">Cómo actuar ante cualquier error o duda</div>

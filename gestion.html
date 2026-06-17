@@ -157,10 +157,10 @@
   </div>
   <div class="toc-sub">Gastos recurrentes y puntuales, estados, caja</div>
   <div class="toc-item">
-    <span class="toc-item-title">8. CIERRES DE CAJA</span>
+    <span class="toc-item-title">8. CIERRES DE CAJA y VENTAS APPS</span>
     <span class="toc-item-num">→</span>
   </div>
-  <div class="toc-sub">Lectura de cierres recibidos desde Operativo</div>
+  <div class="toc-sub">Lectura de cierres · Verificación del sobre · Ventas apps por producto</div>
   <div class="toc-item">
     <span class="toc-item-title">9. FINANCIERO y AGENDA DE PAGOS</span>
     <span class="toc-item-num">→</span>
@@ -508,21 +508,88 @@
     <tr><th>Columna</th><th>Qué es</th></tr>
     <tr><td>ID_Cierre</td><td>Identificador único del cierre (CC-XXX)</td></tr>
     <tr><td>Fecha / Turno / Responsable</td><td>Datos básicos del turno</td></tr>
-    <tr><td>Ventas_Efectivo</td><td>Ventas en efectivo según el sistema de ventas</td></tr>
-    <tr><td>Efectivo caja</td><td>Efectivo físico contado por el encargado</td></tr>
-    <tr><td>Gastos_Chicos / Concepto</td><td>Gastos menores pagados con caja durante el turno</td></tr>
-    <tr><td>Cambio al cierre</td><td>Efectivo que queda en caja para el siguiente turno</td></tr>
-    <tr><td>Efectivo_Sobre</td><td>Lo que va al sobre: Efectivo contado − Cambio al cierre</td></tr>
-    <tr><td>Diferencia</td><td>Diferencia entre lo esperado y lo contado. Idealmente 0.</td></tr>
-    <tr><td>Estado_Alerta</td><td><span class="badge badge-green">OK</span> / <span class="badge badge-orange">Sobrante</span> / <span class="badge badge-red">Faltante</span></td></tr>
+    <tr><td>Ventas_Efectivo (E)</td><td>Ventas en efectivo de Way Menu según el encargado</td></tr>
+    <tr><td>Ventas_Efectivo_PedidosYa (F)</td><td>Efectivo de PedidosYa que entró físicamente a caja durante el turno</td></tr>
+    <tr><td>Efectivo caja (G)</td><td>Efectivo físico contado por el encargado</td></tr>
+    <tr><td>Gastos_Chicos / Concepto (H-I)</td><td>Gastos menores pagados con caja durante el turno</td></tr>
+    <tr><td>Cambio al cierre (J)</td><td>Efectivo que queda en caja para el siguiente turno</td></tr>
+    <tr><td>Efectivo_Sobre (K)</td><td>Lo que va al sobre: Efectivo contado − Cambio al cierre</td></tr>
+    <tr><td>Diferencia (L)</td><td>Efectivo contado − (Inicio + Ventas Way Menu + Ventas PedidosYa − Gastos). Idealmente 0.</td></tr>
+    <tr><td>Estado_Alerta (M)</td><td><span class="badge badge-green">OK</span> / <span class="badge badge-orange">Sobrante</span> / <span class="badge badge-red">Faltante</span></td></tr>
+    <tr><td>Estado_Control (O)</td><td><span class="badge badge-orange">PENDIENTE DE CONTROL</span> → <span class="badge badge-yellow">EN REVISION</span> → <span class="badge badge-green">CONFIRMADO</span></td></tr>
+    <tr><td>Revisado (P) / Diferencia_Revision (Q)</td><td>Parte del proceso de verificación del sobre (ver abajo)</td></tr>
   </table>
+
+  <h3>Cómo verificar un cierre (proceso de sobre)</h3>
+  <p>Cada cierre llega con Estado_Control = <span class="badge badge-orange">PENDIENTE DE CONTROL</span>. Para confirmarlo:</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">Abrí el sobre del turno y contá el efectivo. El monto esperado es <strong>Efectivo_Sobre</strong> (col K).</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">En la columna <strong>Revisado (P)</strong> escribí <strong>SÍ</strong> — el Estado_Control pasa a <span class="badge badge-yellow">EN REVISION</span>.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">En la columna <strong>Diferencia_Revision (Q)</strong> escribí <strong>0</strong> si el sobre coincide, o el monto de diferencia si no coincide (positivo si sobra, negativo si falta).</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text">El Estado_Control pasa automáticamente a <span class="badge badge-green">CONFIRMADO</span> y Tesorería se actualiza.</div>
+    </div>
+  </div>
 
   <div class="alert alert-info">
     <div class="alert-icon">ℹ</div>
     <div class="alert-text">
-      <strong>Si un cierre tiene un error:</strong> usá <strong>Cowsins → Admin ▶ → Desbloquear cierre para edición</strong> (en OPERATIVO) o directamente desde GESTIÓN si necesitás corregir un valor. Después volvé a bloquear.
+      <strong>Si un cierre tiene un error:</strong> usá <strong>Operativo → Admin ▶ → Desbloquear cierre para edición</strong> (en OPERATIVO), corregí el valor, después ejecutá <strong>Volver a bloquear cierre editado</strong>.
     </div>
   </div>
+</div>
+
+<!-- ═══════════════ 8b. VENTAS APPS ═══════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">8½</div>
+    <div>
+      <div class="section-title">VENTAS APPS y PRECIOS APPS</div>
+      <div class="section-desc">Registro y configuración de ventas por canal de delivery</div>
+    </div>
+  </div>
+
+  <p>Estas hojas están en OPERATIVO y permiten registrar las ventas detalladas de Rappi y PedidosYa (cantidad por producto). Los encargados completan VENTAS APPS; vos mantenés PRECIOS APPS.</p>
+
+  <h3>PRECIOS APPS — tu responsabilidad</h3>
+  <p>Esta tabla define los precios por canal y producto. Cuando cambian los precios en las apps, actualizá los valores acá.</p>
+  <table>
+    <tr><th>Columna</th><th>Qué cargar</th></tr>
+    <tr><td>Canal</td><td>Rappi o PedidosYa</td></tr>
+    <tr><td>Producto</td><td>Nombre exacto del producto como aparece en la app</td></tr>
+    <tr><td>Precio_Unitario</td><td>Precio de venta en la app (lo que el cliente paga)</td></tr>
+    <tr><td>Activo</td><td><strong>SÍ</strong> si ese precio está vigente. Si un producto no está disponible en esa app, dejar en NO o vacío.</td></tr>
+  </table>
+
+  <div class="alert alert-ok">
+    <div class="alert-icon">✓</div>
+    <div class="alert-text">
+      Después de actualizar precios o agregar productos, ejecutá:<br>
+      <strong>Operativo → Admin ▶ → Actualizar dropdown Producto (VENTAS APPS)</strong><br>
+      para que el desplegable de Producto en VENTAS APPS refleje los cambios.
+    </div>
+  </div>
+
+  <h3>VENTAS APPS — qué ves ahí</h3>
+  <p>Cada fila es una venta de un producto en un turno. El sistema completa el ID, Fecha, Periodo, Precio y Total automáticamente. Podés filtrar por Canal o Periodo para ver el total mensual por canal.</p>
+
+  <h3>Funciones de Admin</h3>
+  <table>
+    <tr><th>Función (Operativo → Admin ▶)</th><th>Cuándo usarla</th></tr>
+    <tr><td>Actualizar dropdown Producto (VENTAS APPS)</td><td>Después de agregar productos a PRECIOS APPS</td></tr>
+    <tr><td>Normalizar IDs duplicados (VENTAS APPS)</td><td>Si hay IDs repetidos por error de carga simultánea</td></tr>
+    <tr><td>Recalcular precios y totales (VENTAS APPS)</td><td>Si los precios muestran "REVISAR PRECIO" y ya los cargaste en PRECIOS APPS</td></tr>
+  </table>
 </div>
 
 <!-- ═══════════════ 9. FINANCIERO y AGENDA PAGOS ═══════════════ -->
@@ -580,7 +647,9 @@
     <tr><td>Actualizar selectores — PAGOS / COMPRAS / GASTOS</td><td>Reconstruye los dropdowns de cada hoja. Usar si aparecen opciones desactualizadas en los desplegables.</td></tr>
     <tr><td>Reparar filas sin ID — GASTOS / PAGOS</td><td>Asigna IDs a filas que quedaron sin ID (ej: copiadas desde otra fuente)</td></tr>
     <tr><td>Migrar CIERRES DE CAJA (1 vez)</td><td>Migra el formato antiguo de cierres al formato actual. Ya ejecutado — no volver a correr.</td></tr>
-    <tr><td>Normalizar / Limpiar CIERRES DE CAJA</td><td>Limpia duplicados y normaliza el formato de los cierres históricos</td></tr>
+    <tr><td>Normalizar CIERRES DE CAJA</td><td>Reconstruye CIERRES DE CAJA en GESTIÓN desde los datos de OPERATIVO. Usar si los datos se desincronizaron.</td></tr>
+    <tr><td>Limpiar datos CIERRES DE CAJA</td><td>Corrige Estado_Control, Revisado y Diferencia_Revision en filas inconsistentes.</td></tr>
+    <tr><td>Reparar Estado_Control CIERRES DE CAJA</td><td>Cuando el Estado_Control quedó vacío tras una normalización. Asigna PENDIENTE o CONFIRMADO según corresponda.</td></tr>
     <tr><td>Configurar parámetros de cambio</td><td>Establece el cambio inicial de caja para los cierres</td></tr>
     <tr><td>Configurar hojas Financiero y Agenda</td><td>Crea o reconfigura las hojas FINANCIERO y AGENDA PAGOS con las fórmulas correctas</td></tr>
     <tr><td>Instalar trigger diario (1 vez)</td><td>Instala el trigger que corre recalcularTodoGestion a las 4 AM. Ya ejecutado — no volver a correr.</td></tr>
